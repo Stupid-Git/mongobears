@@ -120,7 +120,8 @@ router.route('/uzas')
             return;
         }
 
-        Uza.findOne({ 'name': req.body.name }, 'name name', function (err, uza) {
+        //Uza.findOne({ 'name': req.body.name }, 'name name', function (err, uza) {
+        Uza.findOne({ 'name': req.body.name }, '', function (err, uza) {
             if (err) {
                 res.send(err);
                 return;
@@ -173,7 +174,8 @@ router.route('/bears/:bear_id')
         } else {
             // http://mongoosejs.com/docs/queries.html -> Bear.findOne
             // find each person with a last name matching req.params.bear_id, selecting the `name` and `offer` fields
-            Bear.findOne({ 'name': req.params.bear_id }, 'name offer', function (err, bear) {
+            //Bear.findOne({ 'name': req.params.bear_id }, 'name offer', function (err, bear) {
+            Bear.findOne({ 'name': req.params.bear_id }, '', function (err, bear) {
                 if (err) {
                     res.send(err);
                     return;
@@ -287,7 +289,8 @@ router.route('/uzas/:uza_id')
         } else {
             // http://mongoosejs.com/docs/queries.html -> Uza.findOne
             // find each person with a last name matching req.params.uza_id, selecting the `name` and `bears` fields
-            Uza.findOne({ 'name': req.params.uza_id }, 'name bears', function (err, uza) {
+            //Uza.findOne({ 'name': req.params.uza_id }, 'name bears', function (err, uza) {
+            Uza.findOne({ 'name': req.params.uza_id }, '', function (err, uza) {
                 if (err) {
                     res.send(err);
                     return;
@@ -392,7 +395,8 @@ router.route('/uzas/:uza_id')
         } else {
             // http://mongoosejs.com/docs/queries.html -> Uza.findOne
             // find each person with a last name matching req.params.uza_id, selecting the `name` and `bears` fields
-            Uza.findOne({ 'name': req.params.uza_id }, 'name bears', function (err, uza) {
+            //Uza.findOne({ 'name': req.params.uza_id }, 'name bears', function (err, uza) {
+            Uza.findOne({ 'name': req.params.uza_id }, '', function (err, uza) {
                 if (err) {
                     res.send(err);
                     return;
