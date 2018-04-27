@@ -93,7 +93,7 @@ router.route('/bears')
             if (err)
                 res.send(err);
 
-            res.json({ message: 'Bear created!' });
+            res.json({ message: 'OK Bear created', bear : bear});
         });
 
     })
@@ -128,7 +128,7 @@ router.route('/uzas')
             }
 
             if (uza !== null) {
-                res.json({ message: 'User already exists!', name : req.body.name});
+                res.json({ message: 'OK User already exists', uza: uza});
                 return;
             }
             // Prints "Space Ghost is a talk show host".
@@ -142,7 +142,7 @@ router.route('/uzas')
                     res.send(err);
                     return;
                 }
-                res.json({ message: 'User created', name : req.body.name });
+                res.json({ message: 'OK User created', uza: uza });
             });
         });
 
@@ -167,9 +167,12 @@ router.route('/bears/:bear_id')
         console.log('GET /bears/:bear_id req.params.bear_id =',req.params.bear_id, ', len =', req.params.bear_id.length)
         if(req.params.bear_id.length == 24) { // origuinal find by mongodb 24character _id
             Bear.findById(req.params.bear_id, function(err, bear) {
-                if (err)
+                if (err) {
+                    console.log('Bear.findById: err =', err);
                     res.send(err);
-                res.json(bear);
+                    return;
+                }
+                res.json({ message: 'OK', bear: bear} );
             });
         } else {
             // http://mongoosejs.com/docs/queries.html -> Bear.findOne
@@ -177,17 +180,18 @@ router.route('/bears/:bear_id')
             //Bear.findOne({ 'name': req.params.bear_id }, 'name offer', function (err, bear) {
             Bear.findOne({ 'name': req.params.bear_id }, '', function (err, bear) {
                 if (err) {
+                    console.log('Bear.findOne: err =', err);
                     res.send(err);
                     return;
                 }
 
                 if (bear == null) {
-                    res.json({ message: 'Bear not found!', id : req.params.bear_id});
+                    res.json({ message: 'NG Entry not found', id : req.params.bear_id});
                     return;
                 }
                 // Prints "Space Ghost is a talk show host".
-                console.log('%s has offer %s.', bear.name, bear.offer);
-                res.json(bear);
+                console.log('%s has offer %s.', bear.name, JSON.stringify(bear.offer) );
+                res.json({ message: 'OK', bear: bear} );
             });
             /*
             Bear.find(function(err, bears) {
@@ -196,12 +200,12 @@ router.route('/bears/:bear_id')
 
                 bears.forEach(element => {
                     if(element.name == req.params.bear_id){
-                        res.json(element);
+                        res.json( { message: 'OK', bear: element} );
                         return;
                     }
                 });
 
-                res.json({message: 'Can not find it Dude.'});
+                res.json({ message: 'NG Entry not found', bear: null});
 
             });
             */
@@ -236,7 +240,6 @@ router.route('/bears/:bear_id')
                bear.offer = req.body.offer;
            if(req.body.tdid)
                bear.tdid = req.body.tdid;
-      //bear.offer = JSON.stringify(req.body.offer);  // update the bears info
 
             console.log('put - req.body.offer = ', req.body.offer)
             console.log('put -     bear.offer = ', bear.offer)
@@ -252,8 +255,7 @@ router.route('/bears/:bear_id')
                     return;
                 }
 
-                //res.json({ message: 'Bear updated!', offer: bear.offer , bear: bear});
-                res.json({ message: 'Bear updated!', bear: bear});
+                res.json({ message: 'OK Bear updated', bear: bear});
             });
 
         });
@@ -267,7 +269,7 @@ router.route('/bears/:bear_id')
             if (err)
                 res.send(err);
 
-            res.json({ message: 'Successfully deleted' });
+            res.json({ message: 'OK Successfully deleted' });
         });
     });
 
@@ -282,9 +284,12 @@ router.route('/uzas/:uza_id')
         console.log('GET /uzas/:uza_id req.params.uza_id =',req.params.uza_id, ', len =', req.params.uza_id.length)
         if(req.params.uza_id.length == 24) { // origuinal find by mongodb 24character _id
             Uza.findById(req.params.uza_id, function(err, uza) {
-                if (err)
+                if (err) {
+                    console.log('Uza.findById: err =', err);
                     res.send(err);
-                res.json(uza);
+                    return;
+                }
+                res.json({ message: 'OK', uza: uza} );
             });
         } else {
             // http://mongoosejs.com/docs/queries.html -> Uza.findOne
@@ -292,17 +297,18 @@ router.route('/uzas/:uza_id')
             //Uza.findOne({ 'name': req.params.uza_id }, 'name bears', function (err, uza) {
             Uza.findOne({ 'name': req.params.uza_id }, '', function (err, uza) {
                 if (err) {
+                    console.log('Uza.findOne: err =', err);
                     res.send(err);
                     return;
                 }
 
                 if (uza == null) {
-                    res.json({ message: 'Uza not found!', id : req.params.uza_id});
+                    res.json({ message: 'NG Entry not found', id : req.params.uza_id});
                     return;
                 }
                 // Prints "Space Ghost is a talk show host".
                 console.log('%s has bears %s.', uza.name, uza.bears);
-                res.json(uza);
+                res.json({ message: 'OK', uza: uza} );
             });
             /*
             Uza.find(function(err, uzas) {
@@ -366,8 +372,7 @@ router.route('/uzas/:uza_id')
                     return;
                 }
 
-                //res.json({ message: 'Uza updated!', bears: uza.bears , uza: uza});
-                res.json({ message: 'Uza updated!', uza: uza});
+                res.json({ message: 'OK Uza updated', uza: uza});
             });
 
         });
@@ -388,7 +393,7 @@ router.route('/uzas/:uza_id')
                         res.send(err);
                         return;
                     }
-                    res.json({ message: 'Successfully deleted' });
+                    res.json({ message: 'OK Successfully deleted' });
                 });
                 //==========----- delete -----==========
             });
@@ -415,7 +420,7 @@ router.route('/uzas/:uza_id')
                         res.send(err);
                         return;
                     }
-                    res.json({ message: 'Successfully deleted' });
+                    res.json({ message: 'OK Successfully deleted' });
                 });
                 //==========----- delete -----==========
             });
